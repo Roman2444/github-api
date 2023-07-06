@@ -1,61 +1,41 @@
 import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { getSingleRepo, openFolder } from "../actions/singleRepos";
 
 const RepoPage = () => {
+  const dispatch = useDispatch();
   const params = useParams();
   const userLogin = useSelector((state) => state.user.user.login);
+  const singleRepo = useSelector((state) => state.singleRepo.repo);
 
-  const [repo, setRepo] = React.useState([]);
-  //const [prevURL, setPrevURL] = React.useState("");
   const [historyURL, setHistoryURL] = React.useState([]);
 
-  const getOneRepo = async (login, repoName) => {
-    try {
-      const response = await axios.get(
-        `https://api.github.com/repos/${login}/${repoName}/contents`
-      );
-      setRepo(response.data);
-      //dispatch({ type: "repo/load-success", payload: response.data });
-      console.log(["response", response.data]);
-      setHistoryURL(
-        [`https://api.github.com/repos/${login}/${repoName}/contents`]
-      );
-    } catch (error) {
-      console.log(error);
-      //  dispatch({ type: "repo/load-error" });
-    }
-  };
-  const openFolder = async (url) => {
-    try {
-      const response = await axios.get(url);
-      setRepo(response.data);
-      setHistoryURL((prev) => [...prev, url]);
-
-      //dispatch({ type: "repo/load-success", payload: response.data });
-      console.log(["response", response.data]);
-    } catch (error) {
-      console.log(error);
-      //  dispatch({ type: "repo/load-error" });
-    }
-  };
-
   React.useEffect(() => {
-    getOneRepo(userLogin, params.id);
+    dispatch(getSingleRepo(userLogin, params.id));
+    setHistoryURL([
+      `https://api.github.com/repos/${userLogin}/${params.id}/contents`,
+    ]);
   }, []);
 
- const onClickGoUp = () => {
-    openFolder(historyURL[historyURL.length - 2])
-    setHistoryURL(historyURL.slice(0, historyURL.length - 2));
-  }
-console.log(["currentURL", historyURL]);
+  const onClickGoUp = () => {
+    dispatch(openFolder(historyURL[historyURL.length - 2]));
+    setHistoryURL(historyURL.slice(0, historyURL.length - 1));
+  };
+
+  const onClickOpenFolder = (url) => {
+    dispatch(openFolder(url));
+    setHistoryURL((prev) => [...prev, url]);
+  };
+
+  console.log(["historyURL", historyURL]);
   return (
     <div>
       <h3>Репозиторий {params.id} </h3>
 
-      {historyURL.length > 1 &&<button onClick={onClickGoUp}>.. вверх</button>}
-      {repo.map((el) => (
+      {historyURL.length > 1 && <button onClick={onClickGoUp}>.. вверх</button>}
+      {singleRepo.map((el) => (
         <div
           key={el.name}
           style={{ display: "flex", msFlexDirection: "column" }}
@@ -65,7 +45,7 @@ console.log(["currentURL", historyURL]);
             key={el.name}
           ></div>{" "}
           {el.type === "dir" && (
-            <button onClick={() => openFolder(el.url)}>Открыть</button>
+            <button onClick={() => onClickOpenFolder(el.url)}>Открыть</button>
           )}
           <div>{el.name}</div>
           {el.type === "file" && <div> размер файла: {el.size}</div>}
