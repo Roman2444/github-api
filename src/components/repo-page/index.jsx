@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getSingleRepo, openFolder, getBranches } from "../actions/singleRepos";
+import { getSingleRepo, openFolder, getBranches, getBranchData, openFolderBranchData } from "../actions/singleRepos";
 
 const RepoPage = () => {
   const dispatch = useDispatch();
@@ -24,32 +24,8 @@ const RepoPage = () => {
     ]);
   }, []);
 
-  const getBranchData = async () => {
-    //получаем сведения о конкретной ветке, в которой есть ссылка на дерево файлов
-    const response = await fetch(currBranch);
-    const data = await response.json();
-    console.log("response", data.commit.tree.url);
-
-    //получаем дерево файлов с конкретной ветки
-    const secondResponse = await fetch(data.commit.tree.url);
-    const data2 = await secondResponse.json();
-
-    console.log("data2", data2);
-    dispatch({ type: "setOneRepo", payload: data2.tree });
-  };
-
-  const openFolderBranchData = async (url) => {
-
-    //получаем дерево файлов с конкретной ветки
-    const secondResponse = await fetch(url);
-    const data2 = await secondResponse.json();
-
-    console.log("data2", data2);
-    dispatch({ type: "setOneRepo", payload: data2.tree });
-  };
-
   React.useEffect(() => {
-    getBranchData();
+    dispatch(getBranchData(currBranch));
   }, [currBranch]);
 
   const onClickGoUp = () => {
@@ -59,6 +35,11 @@ const RepoPage = () => {
 
   const onClickOpenFolder = (url) => {
     dispatch(openFolder(url));
+    setHistoryURL((prev) => [...prev, url]);
+  };
+
+  const onClickOpenFolderBranchData = (url) => {
+    dispatch(openFolderBranchData(url));
     setHistoryURL((prev) => [...prev, url]);
   };
 
@@ -93,7 +74,7 @@ const RepoPage = () => {
           )}
 
           {el.type === "tree" && (
-            <button onClick={() => openFolderBranchData(el.url)}>Открыть</button>
+            <button onClick={() => onClickOpenFolderBranchData(el.url)}>Открыть</button>
           )}
           <div>{el.name || el.path}</div>
           {(el.type === "file" || el.type === "blob") && (
