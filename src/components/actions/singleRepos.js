@@ -37,7 +37,7 @@ export const getBranches = (login, repoName) => {
       const response = await axios.get(
         `https://api.github.com/repos/${login}/${repoName}/branches`
       );
-      console.log("branches/load-start", response);
+
       dispatch({ type: "branches/load-success", payload: response.data });
     } catch (error) {
       console.log(error);

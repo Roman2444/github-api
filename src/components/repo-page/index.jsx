@@ -1,8 +1,15 @@
 import React from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { getSingleRepo, openFolder, getBranches, getBranchData, openFolderBranchData } from "../actions/singleRepos";
+import {
+  getSingleRepo,
+  openFolder,
+  getBranches,
+  getBranchData,
+  openFolderBranchData,
+} from "../actions/singleRepos";
+import MyInput from "../input";
+import MySelect from "../select";
 
 const RepoPage = () => {
   const dispatch = useDispatch();
@@ -10,11 +17,22 @@ const RepoPage = () => {
   const userLogin = useSelector((state) => state.user.user.login);
   const singleRepo = useSelector((state) => state.singleRepo.repo);
   const branches = useSelector((state) => state.singleRepo.branches);
+  const isLoading = useSelector((state) => state.singleRepo.isLoading);
 
-  console.log(branches);
 
   const [historyURL, setHistoryURL] = React.useState([]);
   const [currBranch, setCurrBranch] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
+
+  const filterValue = React.useMemo(() => {
+    if (singleRepo.length) {
+      return singleRepo.filter((el) =>
+        el.name
+          ? el.name.toLowerCase().includes(searchValue.toLowerCase())
+          : el.path.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+  }, [singleRepo, searchValue]);
 
   React.useEffect(() => {
     dispatch(getSingleRepo(userLogin, params.id));
@@ -43,38 +61,36 @@ const RepoPage = () => {
     setHistoryURL((prev) => [...prev, url]);
   };
 
-  const changeBranch = () => {
-    dispatch(openFolder(url));
-  };
-
-  console.log(["branch", currBranch]);
+  if (isLoading) {
+    return <h1>Loading</h1>;
+  }
   return (
     <div>
       <h3>Репозиторий {params.id} </h3>
-      <select name="select" onChange={(e) => setCurrBranch(e.target.value)}>
-        {branches.map((item) => (
-          <option key={item.name} value={item.commit.url}>
-            {item.name}
-          </option>
-        ))}
-      </select>
+      <MyInput
+        placeholder="Поиск..."
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+      ></MyInput>
+      <MySelect onChange={setCurrBranch} options={branches} defaultValue={'выберите ветку'}>
+      </MySelect>
 
       {historyURL.length > 1 && <button onClick={onClickGoUp}>.. вверх</button>}
-      {singleRepo.map((el) => (
+      {filterValue?.map((el) => (
         <div
           key={el.name}
           style={{ display: "flex", msFlexDirection: "column" }}
         >
           <div
             style={{ width: 20, height: 20, border: "1px solid gray" }}
-            key={el.name}
           ></div>{" "}
-          {(el.type === "dir" ) && (
+          {el.type === "dir" && (
             <button onClick={() => onClickOpenFolder(el.url)}>Открыть</button>
           )}
-
           {el.type === "tree" && (
-            <button onClick={() => onClickOpenFolderBranchData(el.url)}>Открыть</button>
+            <button onClick={() => onClickOpenFolderBranchData(el.url)}>
+              Открыть
+            </button>
           )}
           <div>{el.name || el.path}</div>
           {(el.type === "file" || el.type === "blob") && (

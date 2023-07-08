@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getUserRepos } from "../actions/repos";
 import Repo from "./repo/Repo";
 import { useNavigate} from "react-router-dom";
-
+import MyButton from "../button";
 const Main = () => {
   const navigate = useNavigate();
 
@@ -14,12 +14,14 @@ const Main = () => {
   const user = useSelector((state) => state.user.user.login);
 
   React.useEffect(() => {
-    dispatch(getUserRepos(user));
-  }, []);
+    if (!user) {
+      navigate('/login');
+    } else {
+      dispatch(getUserRepos(user));
+    }
+  }, [user]);
   
-  if (!user) {
-    navigate('/login');
-  }
+
   const handleLogout = () => {
     dispatch({ type: "user/clear" });
     dispatch({ type: "repo/clear" });
@@ -30,7 +32,7 @@ const Main = () => {
   return (
     <>
       <h2>Main</h2>
-      <button onClick={handleLogout}>выйти</button>
+      <MyButton onClick={handleLogout}>выйти</MyButton>
       <h3>Список репозиториев:</h3>
       {repos.map((repo) => {
         return <Repo key={repo.id} repo={repo} />;

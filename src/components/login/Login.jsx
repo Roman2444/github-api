@@ -2,6 +2,8 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../actions/user";
 import { useNavigate} from "react-router-dom";
+import MyButton from "../button";
+import MyInput from "../input";
 
 const Login = () => {
 
@@ -11,7 +13,7 @@ const Login = () => {
   const isLoading = useSelector((state) => state.user.isLoading);
   const exist = useSelector((state) => state.user.exist);
 
-  const [username, setUsername] = React.useState("roman2444");
+  const [username, setUsername] = React.useState("utimur");
   const [password, setPassword] = React.useState("");
 
   const handleSubmit = (e) => {
@@ -19,18 +21,19 @@ const Login = () => {
     dispatch(getUser(username));
   };
   
-  if (exist) {
-    navigate('/');
-  }
-  console.log([user, isLoading, exist]);
+  React.useEffect(() => {
+    if (exist) {
+      navigate('/');
+    }
+  }, [exist]);
 
   return (
     <div>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="username">Username:</label>
-          <input
+          <label htmlFor="username">Username</label>
+          <MyInput
             type="text"
             placeholder="Enter your Github username"
             value={username}
@@ -38,15 +41,15 @@ const Login = () => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password:</label>
-          <input
+          <label htmlFor="password">Password</label>
+          <MyInput
             type="password"
             placeholder="Enter your Github password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Submit</button>
+        <MyButton type="submit">Submit</MyButton>
       </form>
     </div>
   );

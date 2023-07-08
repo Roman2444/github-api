@@ -29,7 +29,6 @@ export default function reposReducer(state = initialState, action) {
     case "singleRepo/load-error":
       return {
         ...state,
-        repo: [],
         isLoading: false,
       };
 
