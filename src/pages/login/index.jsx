@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "../../components/button";
 import MyInput from "../../components/input";
 import { Header } from "../../components/header";
+import PageLayout from "../../components/page-layout";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,10 +29,14 @@ const Login = () => {
   }, [exist]);
 
   return (
-    <div>
+    <PageLayout>
       <Header />
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
+
+      <form
+        style={{ width: "300px", margin: "0 auto" }}
+        onSubmit={handleSubmit}
+      >
+        <h1>Login</h1>
         <div>
           <label htmlFor="username">Username</label>
           <MyInput
@@ -52,7 +57,7 @@ const Login = () => {
         </div>
         <MyButton type="submit">Войти</MyButton>
       </form>
-    </div>
+    </PageLayout>
   );
 };
 

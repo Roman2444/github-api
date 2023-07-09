@@ -8,6 +8,7 @@ import MyButton from "../../components/button";
 import MyInput from "../../components/input";
 import Loader from "../../components/loader";
 import { Header } from "../../components/header";
+import PageLayout from "../../components/page-layout";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Main = () => {
   }, [user]);
 
   return (
-    <>
+    <PageLayout>
       <Header />
       <h2>Главная страница</h2>
       <MyInput
@@ -50,7 +51,7 @@ const Main = () => {
         filterValue.map((repo) => <Repo key={repo.id} repo={repo} />)
       )}
       {!filterValue.length && <p>Репозитории не найдены</p>}
-    </>
+    </PageLayout>
   );
 };
 

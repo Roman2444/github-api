@@ -12,7 +12,7 @@ import MyInput from "../../components/input";
 import MySelect from "../../components/select";
 import SingleRepoList from "../../components/single-repo-list";
 import { Header } from "../../components/header";
-import List from "@mui/material/List";
+import PageLayout from "../../components/page-layout";
 
 const SingleRepoPage = () => {
   const dispatch = useDispatch();
@@ -64,7 +64,7 @@ const SingleRepoPage = () => {
   };
 
   return (
-    <div>
+    <PageLayout>
       <Header />
       <h3>Репозиторий {params.id} </h3>
       <MyInput
@@ -85,7 +85,7 @@ const SingleRepoPage = () => {
         onClickOpenFolder={onClickOpenFolder}
         onClickOpenFolderBranchData={onClickOpenFolderBranchData}
       />
-    </div>
+    </PageLayout>
   );
 };
 
