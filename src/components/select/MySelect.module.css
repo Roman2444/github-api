@@ -1,4 +1,5 @@
 .mySelect{
+    min-width: 50%;
     padding: 5px 15px;
     color: teal;
     font-size: 14px;
