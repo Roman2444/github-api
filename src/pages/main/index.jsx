@@ -2,12 +2,12 @@ import React from "react";
 import "./main.less";
 import { useSelector, useDispatch } from "react-redux";
 import { getUserRepos } from "../../redusers/actions/repos";
-import Repo from "./repo/Repo";
+import Repo from "../../components/repo/Repo";
 import { useNavigate } from "react-router-dom";
-import MyButton from "../button";
-import MyInput from "../input";
-import Loader from "../loader";
-import { Header } from "../header";
+import MyButton from "../../components/button";
+import MyInput from "../../components/input";
+import Loader from "../../components/loader";
+import { Header } from "../../components/header";
 
 const Main = () => {
   const navigate = useNavigate();

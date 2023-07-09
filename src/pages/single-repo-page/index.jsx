@@ -8,10 +8,10 @@ import {
   getBranchData,
   openFolderBranchData,
 } from "../../redusers/actions/singleRepos";
-import MyInput from "../input";
-import MySelect from "../select";
-import SingleRepoList from "../single-repo-list";
-import { Header } from "../header";
+import MyInput from "../../components/input";
+import MySelect from "../../components/select";
+import SingleRepoList from "../../components/single-repo-list";
+import { Header } from "../../components/header";
 import List from "@mui/material/List";
 
 const SingleRepoPage = () => {

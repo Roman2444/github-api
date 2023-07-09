@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getUser } from "../../redusers/actions/user";
 import { useNavigate } from "react-router-dom";
-import MyButton from "../button";
-import MyInput from "../input";
-import { Header } from "../header";
+import MyButton from "../../components/button";
+import MyInput from "../../components/input";
+import { Header } from "../../components/header";
 
 const Login = () => {
   const navigate = useNavigate();

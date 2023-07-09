@@ -1,10 +1,9 @@
 import React from "react";
 import "./app.less";
 import { Routes, Route } from "react-router-dom";
-import Main from "./main/Main";
-import Login from "./login/Login";
-import SingleRepoPage from "./single-repo-page"
-
+import Main from "../pages/main";
+import Login from "../pages/login";
+import SingleRepoPage from "../pages/single-repo-page";
 
 const App = () => {
   return (

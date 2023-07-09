@@ -44,6 +44,7 @@ export default function SingleRepoList({
             />
           ))
         )}
+        {!values?.length && <p>Файлы и папки не найдены</p>}
       </List>
     </>
   );
