@@ -9,13 +9,13 @@ import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
-export default function RepoListItem({ el, onClickOpenFolder, onClickOpenFolderBranchData }) {
+export default function SingleRepoListItem({ el, onClickOpenFolder, onClickOpenFolderBranchData }) {
     const handleOpenFolder = () => {
         el.type === "dir" ? onClickOpenFolder(el.url) : onClickOpenFolderBranchData(el.url) ;
     };
 
   return (
-      <ListItem key={el.name || el.path} >
+      <ListItem >
         <ListItemAvatar>
           <Avatar>
             {el.type === "dir" || el.type === "tree" ? (

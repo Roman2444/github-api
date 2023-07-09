@@ -10,10 +10,11 @@ import {
 } from "../../redusers/actions/singleRepos";
 import MyInput from "../input";
 import MySelect from "../select";
-import RepoList from "../repoList";
+import SingleRepoList from "../single-repo-list";
+import { Header } from "../header";
 import List from "@mui/material/List";
 
-const RepoPage = () => {
+const SingleRepoPage = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const userLogin = useSelector((state) => state.user.user.login);
@@ -62,11 +63,9 @@ const RepoPage = () => {
     setHistoryURL((prev) => [...prev, url]);
   };
 
-  if (isLoading) {
-    return <h1>Loading</h1>;
-  }
   return (
     <div>
+      <Header />
       <h3>Репозиторий {params.id} </h3>
       <MyInput
         placeholder="Поиск..."
@@ -78,32 +77,8 @@ const RepoPage = () => {
         options={branches}
         defaultValue={"выберите ветку"}
       ></MySelect>
-      {/* 
-      {historyURL.length > 1 && <button onClick={onClickGoUp}>.. вверх</button>}
-      {filterValue?.map((el) => (
-        <div
-          key={el.name}
-          style={{ display: "flex", msFlexDirection: "column" }}
-        >
-          <div
-            style={{ width: 20, height: 20, border: "1px solid gray" }}
-          ></div>{" "}
-          {el.type === "dir" && (
-            <button onClick={() => onClickOpenFolder(el.url)}>Открыть</button>
-          )}
-          {el.type === "tree" && (
-            <button onClick={() => onClickOpenFolderBranchData(el.url)}>
-              Открыть
-            </button>
-          )}
-          <div>{el.name || el.path}</div>
-          {(el.type === "file" || el.type === "blob") && (
-            <div> размер файла: {el.size}</div>
-          )}
-        </div>
-      ))} */}
-
-      <RepoList
+      <SingleRepoList
+        isLoading={isLoading}
         onClickGoUp={onClickGoUp}
         values={filterValue}
         backVisible={historyURL.length > 1}
@@ -114,4 +89,4 @@ const RepoPage = () => {
   );
 };
 
-export default RepoPage;
+export default SingleRepoPage;

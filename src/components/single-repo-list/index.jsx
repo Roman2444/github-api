@@ -8,13 +8,16 @@ import ImageIcon from "@mui/icons-material/Image";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-import RepoListItem from "../repoListItem";
-export default function RepoList({
+import SingleRepoListItem from "../single-repo-list-item";
+import Loader from "../loader";
+
+export default function SingleRepoList({
   values,
   onClickGoUp,
   backVisible,
   onClickOpenFolder,
   onClickOpenFolderBranchData,
+  isLoading,
 }) {
   return (
     <>
@@ -29,37 +32,18 @@ export default function RepoList({
             <ListItemText primary="Выход" />
           </ListItem>
         )}
-        {values?.map((el) => (
-          <RepoListItem
-            el={el}
-            onClickOpenFolder={onClickOpenFolder}
-            onClickOpenFolderBranchData={onClickOpenFolderBranchData}
-          />
-        ))}
-        {/* <ListItem>
-        <ListItemAvatar>
-          <Avatar>
-            <ImageIcon />
-          </Avatar>
-        </ListItemAvatar>
-        <ListItemText primary={el.name} secondary={el.size + ' kb'} />
-      </ListItem> */}
-        {/* //   <ListItem>
-    //     <ListItemAvatar>
-    //       <Avatar>
-    //         <TextSnippetIcon />
-    //       </Avatar>
-    //     </ListItemAvatar>
-    //     <ListItemText primary="Work" secondary="Jan 7, 2014" />
-    //   </ListItem>
-    //   <ListItem>
-    //     <ListItemAvatar>
-    //       <Avatar>
-    //         <FolderOutlinedIcon />
-    //       </Avatar>
-    //     </ListItemAvatar>
-    //     <ListItemText primary="Vacation" secondary="July 20, 2014" />
-    //   </ListItem> */}
+        {isLoading ? (
+          <Loader />
+        ) : (
+          values?.map((el) => (
+            <SingleRepoListItem
+              key={el.name || el.path}
+              el={el}
+              onClickOpenFolder={onClickOpenFolder}
+              onClickOpenFolderBranchData={onClickOpenFolderBranchData}
+            />
+          ))
+        )}
       </List>
     </>
   );

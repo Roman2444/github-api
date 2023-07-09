@@ -6,6 +6,8 @@ import Repo from "./repo/Repo";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../button";
 import MyInput from "../input";
+import Loader from "../loader";
+import { Header } from "../header";
 
 const Main = () => {
   const navigate = useNavigate();
@@ -32,28 +34,22 @@ const Main = () => {
     }
   }, [user]);
 
-  const handleLogout = () => {
-    dispatch({ type: "user/clear" });
-    dispatch({ type: "repo/clear" });
-  };
-
-  if (isLoading) return <h1>Loading</h1>;
-
   return (
     <>
-      <h2>Main</h2>
-      <MyButton onClick={handleLogout}>выйти</MyButton>
+      <Header />
+      <h2>Главная страница</h2>
       <MyInput
         placeholder="Поиск..."
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
       />
       <h3>Список репозиториев:</h3>
-      {filterValue.length > 0 ? (
-        filterValue.map((repo) => <Repo key={repo.id} repo={repo} />)
+      {isLoading ? (
+        <Loader />
       ) : (
-        <p>Репозитории не найдены</p>
+        filterValue.map((repo) => <Repo key={repo.id} repo={repo} />)
       )}
+      {!filterValue.length && <p>Репозитории не найдены</p>}
     </>
   );
 };

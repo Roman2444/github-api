@@ -4,6 +4,7 @@ import { getUser } from "../../redusers/actions/user";
 import { useNavigate } from "react-router-dom";
 import MyButton from "../button";
 import MyInput from "../input";
+import { Header } from "../header";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,6 +29,7 @@ const Login = () => {
 
   return (
     <div>
+      <Header />
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
         <div>

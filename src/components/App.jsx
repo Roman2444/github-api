@@ -3,7 +3,7 @@ import "./app.less";
 import { Routes, Route } from "react-router-dom";
 import Main from "./main/Main";
 import Login from "./login/Login";
-import RepoPage from "./repo-page/index"
+import SingleRepoPage from "./single-repo-page"
 
 
 const App = () => {
@@ -11,7 +11,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<Main />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/repo/:id" element={<RepoPage />} />
+      <Route path="/repo/:id" element={<SingleRepoPage />} />
     </Routes>
   );
 };
