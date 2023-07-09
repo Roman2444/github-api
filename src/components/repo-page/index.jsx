@@ -7,9 +7,11 @@ import {
   getBranches,
   getBranchData,
   openFolderBranchData,
-} from "../actions/singleRepos";
+} from "../../redusers/actions/singleRepos";
 import MyInput from "../input";
 import MySelect from "../select";
+import RepoList from "../repoList";
+import List from "@mui/material/List";
 
 const RepoPage = () => {
   const dispatch = useDispatch();
@@ -18,7 +20,6 @@ const RepoPage = () => {
   const singleRepo = useSelector((state) => state.singleRepo.repo);
   const branches = useSelector((state) => state.singleRepo.branches);
   const isLoading = useSelector((state) => state.singleRepo.isLoading);
-
 
   const [historyURL, setHistoryURL] = React.useState([]);
   const [currBranch, setCurrBranch] = React.useState("");
@@ -72,9 +73,12 @@ const RepoPage = () => {
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}
       ></MyInput>
-      <MySelect onChange={setCurrBranch} options={branches} defaultValue={'выберите ветку'}>
-      </MySelect>
-
+      <MySelect
+        onChange={setCurrBranch}
+        options={branches}
+        defaultValue={"выберите ветку"}
+      ></MySelect>
+      {/* 
       {historyURL.length > 1 && <button onClick={onClickGoUp}>.. вверх</button>}
       {filterValue?.map((el) => (
         <div
@@ -97,7 +101,15 @@ const RepoPage = () => {
             <div> размер файла: {el.size}</div>
           )}
         </div>
-      ))}
+      ))} */}
+
+      <RepoList
+        onClickGoUp={onClickGoUp}
+        values={filterValue}
+        backVisible={historyURL.length > 1}
+        onClickOpenFolder={onClickOpenFolder}
+        onClickOpenFolderBranchData={onClickOpenFolderBranchData}
+      />
     </div>
   );
 };

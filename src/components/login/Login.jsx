@@ -1,12 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getUser } from "../actions/user";
-import { useNavigate} from "react-router-dom";
+import { getUser } from "../../redusers/actions/user";
+import { useNavigate } from "react-router-dom";
 import MyButton from "../button";
 import MyInput from "../input";
 
 const Login = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
@@ -20,10 +19,10 @@ const Login = () => {
     e.preventDefault();
     dispatch(getUser(username));
   };
-  
+
   React.useEffect(() => {
     if (exist) {
-      navigate('/');
+      navigate("/");
     }
   }, [exist]);
 
@@ -49,7 +48,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <MyButton type="submit">Submit</MyButton>
+        <MyButton type="submit">Войти</MyButton>
       </form>
     </div>
   );

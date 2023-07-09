@@ -1,5 +1,5 @@
 import axios from "axios";
-import { setRepos } from "../../redusers/reposReducer";
+import { setRepos } from "../reposReducer";
 
 export const getUserRepos = (login) => {
   return async (dispatch) => {

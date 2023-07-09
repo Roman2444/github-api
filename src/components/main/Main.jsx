@@ -1,10 +1,12 @@
 import React from "react";
 import "./main.less";
 import { useSelector, useDispatch } from "react-redux";
-import { getUserRepos } from "../actions/repos";
+import { getUserRepos } from "../../redusers/actions/repos";
 import Repo from "./repo/Repo";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MyButton from "../button";
+import MyInput from "../input";
+
 const Main = () => {
   const navigate = useNavigate();
 
@@ -13,19 +15,27 @@ const Main = () => {
   const isLoading = useSelector((state) => state.repos.isLoading);
   const user = useSelector((state) => state.user.user.login);
 
+  const [searchValue, setSearchValue] = React.useState("");
+  const filterValue = React.useMemo(() => {
+    if (repos) {
+      return repos.filter((el) =>
+        el.name.toLowerCase().includes(searchValue.toLowerCase())
+      );
+    }
+  }, [repos, searchValue]);
+
   React.useEffect(() => {
     if (!user) {
-      navigate('/login');
+      navigate("/login");
     } else {
       dispatch(getUserRepos(user));
     }
   }, [user]);
-  
 
   const handleLogout = () => {
     dispatch({ type: "user/clear" });
     dispatch({ type: "repo/clear" });
-  }
+  };
 
   if (isLoading) return <h1>Loading</h1>;
 
@@ -33,10 +43,17 @@ const Main = () => {
     <>
       <h2>Main</h2>
       <MyButton onClick={handleLogout}>выйти</MyButton>
+      <MyInput
+        placeholder="Поиск..."
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
+      />
       <h3>Список репозиториев:</h3>
-      {repos.map((repo) => {
-        return <Repo key={repo.id} repo={repo} />;
-      })}
+      {filterValue.length > 0 ? (
+        filterValue.map((repo) => <Repo key={repo.id} repo={repo} />)
+      ) : (
+        <p>Репозитории не найдены</p>
+      )}
     </>
   );
 };

@@ -36,6 +36,7 @@ export default function getUser(state = initialState, action) {
         ...state,
         isLoading: false,
         user: {},
+        exist: false,
       };
 
     default:
